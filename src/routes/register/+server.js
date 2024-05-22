@@ -1,23 +1,20 @@
-import { comparePasswords } from '$lib/auth'; // Use comparePasswords instead
+import { hashPassword } from '$lib/auth.js';
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 export async function POST({ request }) {
-	const { email, password, name } = await request.json();
-	try {
-		// ** Fix: Use comparePasswords to hash password **
-		const hashedPassword = await comparePasswords(password, null);
+	const { email, password } = await request.json();
+	const hashedPassword = await hashPassword(password);
 
+	try {
 		const user = await prisma.user.create({
 			data: {
 				email,
-				password: hashedPassword,
-				name
+				password: hashedPassword
 			}
 		});
-		// ... rest of your registration logic
+		return new Response(JSON.stringify({ user }), { status: 201 });
 	} catch (error) {
-		// ... handle errors
+		return new Response(JSON.stringify({ error: 'User already exists' }), { status: 400 });
 	}
 }

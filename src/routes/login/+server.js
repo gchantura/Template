@@ -1,6 +1,6 @@
 // src/routes/login/+server.js
 
-import { comparePasswords } from '$lib/auth';
+import { comparePasswords } from '$lib/auth.js';
 import { PrismaClient } from '@prisma/client';
 import { serialize } from 'cookie';
 
