@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { serialize } from 'cookie';
 
 const prisma = new PrismaClient();
+const SECRET = 'your_secret_key'; // Replace with the same secret used in auth.js
 
 export async function POST({ request }) {
 	const { email, password } = await request.json();
